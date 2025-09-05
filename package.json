@@ -9,7 +9,7 @@
     "build": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "fastify": "^4.28.1",
+    "fastify": "^5.0.0",
     "@fastify/cors": "^10.0.1",
     "better-sqlite3": "^12.2.0",
     "zod": "^3.23.8",
