@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify';
-import { getDB } from '../db/sqlite.js';
+import { getDB, detectSchema } from '../db/sqlite.js';
 
 export default async function routes(f: FastifyInstance) {
   f.get('/posts', async (req, reply) => {
@@ -46,7 +46,7 @@ export default async function routes(f: FastifyInstance) {
     const orderExpr = (() => { switch (q.sort || 'createdAt') { case 'title': return 'title'; case 'source': return 'source'; case 'classification': return 'classification'; default: return 'datetime(created_at)'; } })();
     const direction = (q.desc === undefined ? true : b(q.desc, true)) ? 'DESC' : 'ASC';
     
-    const det = (require('../db/sqlite.js') as any).detectSchema(db);
+    const det = detectSchema(db);
     let select = "p.id, IFNULL(p.source_id,''), p.source, p.created_at, IFNULL(p.classification,''), IFNULL(p.title,''), IFNULL(p.location_name,''), IFNULL(p.url,''), IFNULL(p.keyword,'')";
     select += det.hasEnriched ? ", ec.content_summary" : ", NULL as content_summary";
     select += det.hasLatLon ? ", p.latitude, p.longitude" : ", NULL as latitude, NULL as longitude";
