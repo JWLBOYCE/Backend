@@ -33,13 +33,23 @@ await app.register(helmet, {
   crossOriginEmbedderPolicy: false,
 });
 
+// Security: rate limiting and optional bearer auth hook helper
+import { registerSecurity, requireAuth } from './lib/security.js';
+await registerSecurity(app);
+
 // Routes
 import posts from './routes/posts.js';
 import misc from './routes/misc.js';
 import details from './routes/post_details.js';
-await app.register(posts);
+// Public routes
 await app.register(misc);
-await app.register(details);
+// Protected routes (if API_TOKEN is set)
+const authHook = requireAuth(app);
+await app.register(async (f) => {
+  f.addHook('onRequest', authHook);
+  await f.register(posts);
+  await f.register(details);
+});
 
 app.get('/healthz', async () => ({ ok: true }));
 
