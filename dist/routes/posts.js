@@ -1,8 +1,32 @@
 import { getDB, detectSchema } from '../db/sqlite.js';
+import { z } from 'zod';
 export default async function routes(f) {
+    // Validate query parameters to reduce risk and improve error messages
+    const querySchema = z.object({
+        clsU: z.string().optional(),
+        clsP: z.string().optional(),
+        clsR: z.string().optional(),
+        clsI: z.string().optional(),
+        flagged: z.string().optional(),
+        srcR: z.string().optional(),
+        srcY: z.string().optional(),
+        category: z.string().optional(),
+        range: z.enum(['All', '7d', '30d', '90d']).optional(),
+        sent: z.string().optional(),
+        sort: z.enum(['createdAt', 'title', 'source', 'classification']).optional(),
+        desc: z.string().optional(),
+        q: z.string().optional(),
+        reason: z.union([z.string(), z.array(z.string())]).optional(),
+        limit: z.string().optional(),
+    });
     f.get('/posts', async (req, reply) => {
         const db = getDB();
-        const q = (req.query || {});
+        const parsed = querySchema.safeParse((req.query || {}));
+        if (!parsed.success) {
+            reply.code(400).send({ error: 'Invalid query', details: parsed.error.flatten() });
+            return;
+        }
+        const q = parsed.data;
         const where = [];
         const params = [];
         const b = (v, d) => v === undefined ? d : (v === '1' || String(v).toLowerCase() === 'true');
