@@ -3,7 +3,11 @@ import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
 import * as dotenv from 'dotenv';
 
+// Load base .env first, then overlay .env.local if present to keep dev/prod keys aligned
 dotenv.config();
+try {
+  dotenv.config({ path: '.env.local', override: true });
+} catch {}
 
 const app = Fastify({ logger: true });
 

@@ -1,0 +1,15 @@
+# Node and build artifacts
+node_modules/
+dist/
+*.log
+.DS_Store
+
+# Env files (do not commit secrets)
+.env*
+!/.env.example
+
+# Local databases and dev artifacts
+/devdata/
+/*.db
+/*.db-*
+
