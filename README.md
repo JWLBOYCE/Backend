@@ -7,3 +7,4 @@ Fastify-based read-only API over the SQLite database used by the dashboard.
 - Deploy: Dockerfile provided
 
 # Updated database configuration
+# Database updated
