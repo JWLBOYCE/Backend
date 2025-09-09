@@ -8,3 +8,4 @@ Fastify-based read-only API over the SQLite database used by the dashboard.
 
 # Updated database configuration
 # Database updated
+# Backend deployment ready on Tue Sep  9 23:46:07 BST 2025
