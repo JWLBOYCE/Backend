@@ -6,3 +6,4 @@ Fastify-based read-only API over the SQLite database used by the dashboard.
 - Routes: `/posts`, `/posts/:id/comments`, `/posts/:id/transcript`, `/analytics`, `/facets`, `/schema`, `/healthz`
 - Deploy: Dockerfile provided
 
+# Updated database configuration
